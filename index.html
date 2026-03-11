@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTAGMods</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+:root{
+--bg:#0f0f1a;
+--card:rgba(255,255,255,0.06);
+--text:white;
+--accent1:#ff00cc;
+--accent2:#00ffee;
+}
+
+body.light{
+--bg:#f2f2f2;
+--card:rgba(0,0,0,0.05);
+--text:#111;
+}
+
+body{
+background:linear-gradient(
+120deg,
+#0f0f1a,
+#141428,
+#0f0f1a,
+#1a0033
+);
+background-size:400% 400%;
+animation:bgMove 18s ease infinite;
+color:var(--text);
+overflow-x:hidden;
+transition:0.3s;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* container */
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:40px 20px;
+}
+
+/* header */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:40px;
+}
+
+h1{
+font-size:2.5rem;
+background:linear-gradient(to right,var(--accent1),var(--accent2));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* buttons */
+
+button{
+cursor:pointer;
+border:none;
+border-radius:20px;
+padding:8px 14px;
+font-weight:600;
+background:linear-gradient(45deg,#ff00cc,#3333ff);
+color:white;
+margin-top:8px;
+transition:0.3s;
+}
+
+button:hover{
+transform:translateY(-3px);
+box-shadow:
+0 0 10px #ff00cc,
+0 0 20px #3333ff,
+0 0 30px #00ffee;
+}
+
+/* grid */
+
+.mods{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+/* mod cards */
+
+.mod-card{
+position:relative;
+background:var(--card);
+backdrop-filter:blur(15px);
+padding:25px;
+border-radius:20px;
+transition:0.35s;
+overflow:hidden;
+}
+
+.mod-card::before{
+content:"";
+position:absolute;
+inset:-2px;
+border-radius:20px;
+background:linear-gradient(
+90deg,
+#ff00cc,
+#3333ff,
+#00ffee,
+#ff00cc
+);
+background-size:300%;
+z-index:-1;
+animation:borderMove 6s linear infinite;
+}
+
+.mod-card::after{
+content:"";
+position:absolute;
+inset:2px;
+background:var(--bg);
+border-radius:18px;
+z-index:-1;
+}
+
+.mod-card:hover{
+transform:translateY(-8px) scale(1.02);
+box-shadow:0 15px 40px rgba(0,0,0,0.6);
+}
+
+@keyframes borderMove{
+0%{background-position:0%}
+100%{background-position:300%}
+}
+
+/* premium */
+
+.premium{
+border:2px solid gold;
+}
+
+/* auth */
+
+.auth-box{
+max-width:400px;
+margin:120px auto;
+background:var(--card);
+padding:30px;
+border-radius:20px;
+text-align:center;
+backdrop-filter:blur(20px);
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:10px;
+border:none;
+}
+
+/* notification */
+
+.notification{
+position:fixed;
+top:20px;
+right:-400px;
+background:linear-gradient(to right,var(--accent1),var(--accent2));
+color:white;
+padding:15px 25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+font-weight:600;
+transition:0.5s;
+z-index:1000;
+}
+
+.notification.show{
+right:20px;
+}
+
+.hidden{display:none}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<div id="notification" class="notification"></div>
+
+<!-- LOGIN -->
+
+<div id="authSection" class="auth-box">
+
+<h2 id="authTitle">Login</h2>
+
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="submitAuth()">Submit</button>
+
+<p id="switchText">
+No account?
+<a onclick="toggleAuth()" style="color:#00ffee;cursor:pointer;">Register</a>
+</p>
+
+</div>
+
+<!-- MAIN SHOP -->
+
+<div id="mainSection" class="container hidden">
+
+<header>
+
+<h1>GTAGMods</h1>
+
+<div>
+<button onclick="toggleTheme()">Theme</button>
+<button onclick="logout()">Logout</button>
+</div>
+
+</header>
+
+<div class="mods">
+
+<div class="mod-card">
+
+<h2>TMIFY</h2>
+<p>LibrePad But Better.</p>
+    <p>Made By Bunnyzxxx</p>
+<button onclick="download('https://drive.google.com/uc?export=download&id=1_JnMoR7MR1auf7tSToxsxnq8HBEfRumX')">
+Download
+</button>
+
+</div>
+
+<div class="mod-card">
+
+<h2>Camera Mod</h2>
+<p>Simple Camera Mod.</p>
+    <p>Made By UNKNOWN</p>
+<button onclick="download('https://drive.google.com/uc?export=download&id=190reEcGJeEVt50FZMzl8H8khdo1wbN7g')">
+Download
+</button>
+
+</div>
+
+<div class="mod-card">
+
+<h2>Terry's Casting Mod</h2>
+<p>Really Amazing Casting Mod.</p>
+    <p>Made By Terry.</p>
+<button onclick="download('https://drive.google.com/uc?export=download&id=16QH6_k4RmcOkBCBJCsQx76mDJSmWvdfD')">
+Download
+</button>
+<button onclick="download('https://discord.gg/SsJ6tjtWdn')">
+Terry's Discord
+    </button>
+</div>
+
+<div class="mod-card premium">
+
+<h2>PREMIUM MODS 💎</h2>
+<p>Premium Mod Store</p>
+
+<button onclick="redirectPremium()">
+Go To Store
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* notifications */
+
+function notify(message){
+
+const n=document.getElementById("notification")
+
+n.textContent=message
+
+n.classList.add("show")
+
+setTimeout(()=>n.classList.remove("show"),3000)
+
+}
+
+/* login system */
+
+let isLogin=true
+
+function toggleAuth(){
+
+isLogin=!isLogin
+
+authTitle.innerText=isLogin?"Login":"Register"
+
+switchText.innerHTML=isLogin
+?'No account? <a onclick="toggleAuth()" style="color:#00ffee;cursor:pointer;">Register</a>'
+:'Have account? <a onclick="toggleAuth()" style="color:#00ffee;cursor:pointer;">Login</a>'
+
+}
+
+function submitAuth(){
+
+let user=username.value
+let pass=password.value
+
+if(!user||!pass) return notify("Fill all fields")
+
+let users=JSON.parse(localStorage.getItem("users")||"{}")
+
+if(isLogin){
+
+if(!users[user]||users[user]!==pass)
+return notify("Invalid login")
+
+localStorage.setItem("loggedIn",user)
+
+loadMain()
+
+notify("Logged in")
+
+}else{
+
+if(users[user]) return notify("User exists")
+
+users[user]=pass
+
+localStorage.setItem("users",JSON.stringify(users))
+
+notify("Registered")
+
+toggleAuth()
+
+}
+
+}
+
+function logout(){
+
+localStorage.removeItem("loggedIn")
+
+location.reload()
+
+}
+
+function loadMain(){
+
+authSection.classList.add("hidden")
+mainSection.classList.remove("hidden")
+
+}
+
+if(localStorage.getItem("loggedIn")) loadMain()
+
+/* downloads */
+
+function download(url){
+
+const link=document.createElement("a")
+
+link.href=url
+link.target="_blank"
+
+document.body.appendChild(link)
+
+link.click()
+
+document.body.removeChild(link)
+
+notify("Download started")
+
+}
+
+/* premium */
+
+function redirectPremium(){
+
+window.location.href="https://payhip.com/GTAGMods"
+
+}
+
+/* theme */
+
+function toggleTheme(){
+
+document.body.classList.toggle("light")
+
+}
+
+/* particles */
+
+const canvas=document.getElementById("particles")
+const ctx=canvas.getContext("2d")
+
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
+
+let particles=[]
+
+for(let i=0;i<90;i++){
+
+particles.push({
+
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2+1,
+dx:Math.random()-0.5,
+dy:Math.random()-0.5
+
+})
+
+}
+
+function animate(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+particles.forEach(p=>{
+
+ctx.beginPath()
+
+ctx.fillStyle="rgba(0,255,238,0.8)"
+ctx.shadowColor="#00ffee"
+ctx.shadowBlur=10
+
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
+
+ctx.fill()
+
+p.x+=p.dx
+p.y+=p.dy
+
+if(p.x<0||p.x>canvas.width)p.dx*=-1
+if(p.y<0||p.y>canvas.height)p.dy*=-1
+
+})
+
+requestAnimationFrame(animate)
+
+}
+
+animate()
+
+</script>
+
+</body>
+</html>
